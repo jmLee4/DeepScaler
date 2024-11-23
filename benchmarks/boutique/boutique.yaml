@@ -58,12 +58,6 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
-#          requests:
-#            cpu: 100m
-#            memory: 64Mi
-#          limits:
-#            cpu: 100m
-#            memory: 64Mi
 ---
 apiVersion: v1
 kind: Service
@@ -133,12 +127,6 @@ spec:
             limits:
               cpu: 200m
               memory: 128Mi
-#            requests:
-#              cpu: 100m
-#              memory: 64Mi
-#            limits:
-#              cpu: 100m
-#              memory: 64Mi
 ---
 apiVersion: v1
 kind: Service
@@ -199,12 +187,6 @@ spec:
           limits:
             cpu: 200m
             memory: 450Mi
-#          requests:
-#            cpu: 100m
-#            memory: 220Mi
-#          limits:
-#            cpu: 100m
-#            memory: 220Mi
 ---
 apiVersion: v1
 kind: Service
@@ -293,12 +275,6 @@ spec:
             limits:
               cpu: 200m
               memory: 128Mi
-#            requests:
-#              cpu: 200m
-#              memory: 128Mi
-#            limits:
-#              cpu: 300m
-#              memory: 192Mi
 ---
 apiVersion: v1
 kind: Service
@@ -343,7 +319,7 @@ spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
       containers:
-      - name: paymentservice 
+      - name: paymentservice
         image: mengchunyang/paymentservice:v0.3.6
         ports:
         - containerPort: 50051
@@ -369,12 +345,6 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
-#          requests:
-#            cpu: 100m
-#            memory: 64Mi
-#          limits:
-#            cpu: 100m
-#            memory: 64Mi
 ---
 apiVersion: v1
 kind: Service
@@ -433,12 +403,6 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
-#          requests:
-#            cpu: 200m
-#            memory: 128Mi
-#          limits:
-#            cpu: 200m
-#            memory: 128Mi
 ---
 apiVersion: v1
 kind: Service
@@ -483,12 +447,6 @@ spec:
           limits:
             cpu: 300m
             memory: 128Mi
-#          requests:
-#            cpu: 200m
-#            memory: 64Mi
-#          limits:
-#            cpu: 200m
-#            memory: 64Mi
         readinessProbe:
           initialDelaySeconds: 15
           exec:
@@ -512,57 +470,6 @@ spec:
     port: 7070
     targetPort: 7070
 ---
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  name: loadgenerator
-#spec:
-#  selector:
-#    matchLabels:
-#      app: loadgenerator
-#  replicas: 1
-#  template:
-#    metadata:
-#      labels:
-#        app: loadgenerator
-#      annotations:
-#        sidecar.istio.io/rewriteAppHTTPProbers: "true"
-#    spec:
-#      serviceAccountName: default
-#      terminationGracePeriodSeconds: 5
-#      restartPolicy: Always
-#      initContainers:
-#      - command:
-#        - /bin/sh
-#        - -exc
-#        - |
-#          echo "Init container pinging frontend: ${FRONTEND_ADDR}..."
-#          STATUSCODE=$(wget --server-response http://${FRONTEND_ADDR} 2>&1 | awk '/^  HTTP/{print $2}')
-#          if test $STATUSCODE -ne 200; then
-#              echo "Error: Could not reach frontend - Status code: ${STATUSCODE}"
-#              exit 1
-#          fi
-#        name: frontend-check
-#        image: busybox:latest
-#        env:
-#        - name: FRONTEND_ADDR
-#          value: "frontend:80"
-#      containers:
-#      - name: loadgenerator
-#        image: mengchunyang/loadgenerator:v0.3.6
-#        env:
-#        - name: FRONTEND_ADDR
-#          value: "frontend:80"
-#        - name: USERS
-#          value: "10"
-#        resources:
-#          requests:
-#            cpu: 300m
-#            memory: 256Mi
-#          limits:
-#            cpu: 500m
-#            memory: 512Mi
-#---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -606,12 +513,6 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
-#          requests:
-#            cpu: 200m
-#            memory: 128Mi
-#          limits:
-#            cpu: 200m
-#            memory: 128Mi
 ---
 apiVersion: v1
 kind: Service
@@ -670,12 +571,6 @@ spec:
           limits:
             cpu: 200m
             memory: 128Mi
-#          requests:
-#            cpu: 100m
-#            memory: 64Mi
-#          limits:
-#            cpu: 100m
-#            memory: 64Mi
 ---
 apiVersion: v1
 kind: Service
@@ -720,25 +615,12 @@ spec:
         - mountPath: /data
           name: redis-data
         resources:
-#          requests:
-#            cpu: 1m
-#            memory: 10Mi
-#          limits:
-#            cpu: 2m
-#            memory: 12Mi
           limits:
             memory: 256Mi
             cpu: 125m
           requests:
             cpu: 70m
             memory: 200Mi
-          
-#          limits:
-#            cpu: 125m
-#            memory: 256Mi
-#          requests:
-#            cpu: 125m
-#            memory: 256Mi
       volumes:
       - name: redis-data
         emptyDir: {}
@@ -792,12 +674,6 @@ spec:
           limits:
             cpu: 300m
             memory: 300Mi
-#          requests:
-#            cpu: 200m
-#            memory: 180Mi
-#          limits:
-#            cpu: 200m
-#            memory: 180Mi
         readinessProbe:
           initialDelaySeconds: 20
           periodSeconds: 15

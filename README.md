@@ -74,12 +74,12 @@ We use Jaeger to initiate scenario A, which involves establishing an invocation 
 ### 1. Bookinfo
 ```
 (1) kubectl create -f <(istioctl kube-inject -f /benchmarks/bookinfo/bookinfo.yaml)
-(2) kubectl apply  -f /benchmarks/bookinfo/bookinfo-gateway.yaml)
+(2) kubectl apply  -f /benchmarks/bookinfo/bookinfo-gateway.yaml
 ```
 ### 2. Online-boutique
 ```
 (1) kubectl create -f <(istioctl kube-inject -f /benchmarks/boutique/boutique.yaml)
-(2) kubectl apply  -f /benchmarks/boutique/boutique-gateway.yaml)
+(2) kubectl apply  -f /benchmarks/boutique/boutique-gateway.yaml
 ```
 ### 3. Train-ticket
 Deploy the Train-Ticket system on K8S with istio.

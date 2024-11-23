@@ -76,7 +76,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "sum(rate(istio_requests_total{destination_workload_namespace=~\"$namespace\",reporter='destination',destination_workload=~\"$deploy\"}[$interval]))",
@@ -87,7 +87,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "100-((sum(rate(istio_requests_total{destination_workload_namespace=~\"$namespace\",destination_workload=~\"$deploy\",response_code=\"200\"}[$interval]))+sum(rate(istio_requests_total{destination_workload_namespace=~\"$namespace\",destination_workload=~\"$deploy\",response_code=\"302\"}[$interval])))/sum(rate(istio_requests_total{destination_workload_namespace=~\"$namespace\",destination_workload=~\"$deploy\"}[$interval])))*100",
@@ -185,7 +185,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\",container=~\"$deploy.*\"}[$interval])) / \nsum(container_spec_cpu_quota{namespace=~\"$namespace\",pod=~\"$deploy.*\"} / 100000) * 100",
@@ -197,7 +197,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\",container=~\"$deploy.*\"}[$interval]))",
@@ -209,7 +209,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\",container=~\"$deploy.*\"}[$interval]))/\ncount(container_memory_working_set_bytes{namespace=~\"$namespace\",pod=~\"$deploy.*\"})",
@@ -221,7 +221,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "sum(irate(container_cpu_usage_seconds_total{container=~\"$deploy.*\",namespace=~\"$namespace\"}[5m])*100)/sum(container_spec_cpu_quota{container=~\"$deploy.*\",namespace=~\"$namespace\"}/container_spec_cpu_period{container=~\"$deploy.*\",namespace=~\"$namespace\"})",
@@ -366,7 +366,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "sum(rate(istio_request_duration_milliseconds_sum{destination_workload_namespace=~\"$namespace\",destination_workload=~\"$deploy\"}[$interval]))/sum(rate(istio_request_duration_milliseconds_count{destination_workload_namespace=~\"$namespace\",destination_workload=~\"$deploy\"}[$interval]))",
@@ -377,7 +377,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "histogram_quantile(0.90, sum(irate(istio_request_duration_milliseconds_bucket{destination_workload_namespace=~\"$namespace\", destination_workload=~\"$deploy\"}[$interval])) by (le))",
@@ -389,7 +389,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "histogram_quantile(0.95, sum(irate(istio_request_duration_milliseconds_bucket{destination_workload_namespace=~\"$namespace\", destination_workload=~\"$deploy\"}[$interval])) by (le))",
@@ -461,7 +461,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "sum(container_memory_usage_bytes{namespace=~\"$namespace\",container=~\"$deploy\"})",
@@ -472,7 +472,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "sum(container_memory_usage_bytes{namespace=~\"$namespace\",container=~\"$deploy\"}) / sum(container_spec_memory_limit_bytes{namespace=~\"$namespace\",container=~\"$deploy\"}) * 100",
@@ -613,7 +613,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "count(container_spec_cpu_period{namespace=~\"$namespace\",container=~\"$deploy\"})",
@@ -624,7 +624,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "count(sum(rate(container_cpu_usage_seconds_total{image!=\"\",namespace=~\"$namespace\", container=~\"$deploy\"}[$interval])) by (pod, namespace))",
@@ -680,7 +680,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "sum(irate(istio_response_bytes_sum{source_workload_namespace=~\"$namespace\", reporter=\"source\", app=~\"$deploy\"}[$interval]))",
@@ -691,7 +691,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "sum(irate(istio_request_bytes_sum{source_workload_namespace=~\"$namespace\", reporter=\"source\", app=~\"$deploy\"}[1m]))",
@@ -703,7 +703,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "sum(irate(istio_request_bytes_sum{source_workload_namespace=~\"$namespace\", reporter=\"source\", app=~\"productpage\"}[1m]))",
@@ -818,7 +818,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "P1809F7CD0C75ACF3"
           },
           "exemplar": true,
           "expr": "sum(container_fs_usage_bytes{namespace=~\"$namespace\", container=~\"$deploy\"})",
