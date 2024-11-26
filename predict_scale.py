@@ -1,36 +1,22 @@
-import torch
-import numpy as np
-from models import AdapGL
+import argparse
+import datetime
+import math
 import os
 import sys
-import yaml
-import torch
-import argparse
-import trainer
-from utils import scaler
-from models import AdapGL
-from dataset import TPDataset
-from dataset import TPDataset2
-from torch.utils.data import DataLoader
-import numpy as np
-import matplotlib.pyplot as plt
-import torch
-import numpy as np
-import datetime
-from metrics_fetch import save_all_fetch_data
-from prepareData import predict_read_and_generate_dataset
-from k8sop import K8sOp
-import urllib.parse
-import random
-import json
 import time
-import xlwt
-import requests
-import pandas as pd
-import math
-import operator
-import subprocess
-import math
+
+import numpy as np
+import torch
+import yaml
+from torch.utils.data import DataLoader
+
+import trainer
+from dataset import TPDataset, TPDataset2
+from k8s_operator import K8sOperator
+from metrics_fetch import save_all_fetch_data
+from models import AdapGL
+from prepareData import predict_read_and_generate_dataset
+from utils import scaler
 
 
 def load_config(data_path):
@@ -40,8 +26,8 @@ def load_config(data_path):
 
 
 def main(args):
-    k8s_op = K8sOp()
-    svc_ls = ["adservice", "cartservice", "checkoutservice","currencyservice", "emailservice","frontend","paymentservice","productcatalogservice","recommendationservice","shippingservice"]
+    k8s_operator = K8sOperator()
+    service_list = ["adservice", "cartservice", "checkoutservice", "currencyservice", "emailservice", "frontend", "paymentservice", "productcatalogservice", "recommendationservice", "shippingservice"]
     
     c_temp=0#loop time
     while True:
@@ -516,10 +502,10 @@ def main(args):
             pods_num_to_scale['shippingservice']=math.ceil(float(shippingservice)) 
         end = time.time()
         print(end-start)
-        for svc in svc_ls:
+        for svc in service_list:
             if pods_num_to_scale[svc]<=0:
                 pods_num_to_scale[svc]=1
-            k8s_op.scale_deployment_by_replicas(svc, "boutiquessj", pods_num_to_scale[svc])
+            k8s_operator.scale_deployment_by_replicas(svc, pods_num_to_scale[svc])
         print("after scale svc:", pods_num_to_scale)
         end = time.time()
         temp = end-start

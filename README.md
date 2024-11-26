@@ -1,32 +1,33 @@
 # DeepScaler: Holistic Autoscaling for Microservices Based on Spatiotemporal GNN with Adaptive Graph Learning
 
 ![Static Badge](https://img.shields.io/badge/python-3.6-blue) ![Static Badge](https://img.shields.io/badge/PyTorch-red) 
-- [Overview](#overview)
-- [I. Machine Prerequis](#i-machine-prerequis)
-- [II. Installation](#ii-installation)
-  * [1. Setup Required Packages](#1-setup-required-packages)
-  * [2. Setup Docker](#2-setup-docker)
-  * [3. Setup Kubernetes Cluster](#3-setup-kubernetes-cluster)
-  * [4. Setup Prometheus](#4-setup-prometheus)
-  * [5. Setup Istio](#5-setup-istio)
-  * [6. Setup Locust](#6-setup-locust)
-  * [7. Setup Jaeger](#7-setup-jaeger)
-- [III. Deploy Benchmark Microservices](#iii-deploye-benchmark-microservices)
-  * [1. Bookinfo](#1-bookinfo)
-  * [2. Online-boutique](#2-online-boutique)
-  * [3. Train-ticket](#3-train-ticket)
-- [IV. Workload Generation](#iv-workload-generation)
-- [V. Train and Test](#v-train-and-test)
-  * [1. Model Configuration](#1-model-configuration)
-  * [2. Collect the original dataset](#2-collect-the-original-dataset)
-  * [3. Process the dataset](#3-process-the-dataset)
-  * [4. Export the well-trained model](#4-export-the-well-trained-model)
-- [VI. Autoscaling](#vi-autoscaling)
-- [VII. Evaluation](#vii-evaluation)
-  * [1. Analyze the similarity between the original graph relationship and od, cc.](#1-analyze-the-similarity-between-the-original-graph-relationship-and-od--cc)
-  * [2. Compute relevant metrics.](#2-compute-relevant-metrics)
-- [VIII. Citation](#viii-citation)
-- [IX. Contact](#ix-contact)
+- [DeepScaler: Holistic Autoscaling for Microservices Based on Spatiotemporal GNN with Adaptive Graph Learning](#deepscaler-holistic-autoscaling-for-microservices-based-on-spatiotemporal-gnn-with-adaptive-graph-learning)
+  - [Overview](#overview)
+  - [I. Machine Prerequisite](#i-machine-prerequisite)
+  - [II. Installation](#ii-installation)
+    - [1. Setup Required Packages](#1-setup-required-packages)
+    - [2. Setup Docker](#2-setup-docker)
+    - [3. Setup Kubernetes Cluster](#3-setup-kubernetes-cluster)
+    - [4. Setup Prometheus](#4-setup-prometheus)
+    - [5. Setup Istio](#5-setup-istio)
+    - [6. Setup Locust](#6-setup-locust)
+    - [7. Setup Jaeger](#7-setup-jaeger)
+  - [III. Deploy Benchmark Microservices](#iii-deploy-benchmark-microservices)
+    - [1. Bookinfo](#1-bookinfo)
+    - [2. Online-boutique](#2-online-boutique)
+    - [3. Train-ticket](#3-train-ticket)
+  - [IV. Workload Generation](#iv-workload-generation)
+  - [V. Train and Test](#v-train-and-test)
+    - [1. Model Configuration](#1-model-configuration)
+    - [2. Collect the original dataset](#2-collect-the-original-dataset)
+    - [3. Process the dataset](#3-process-the-dataset)
+    - [4. Export the well-trained model](#4-export-the-well-trained-model)
+  - [VI. Autoscaling](#vi-autoscaling)
+  - [VII. Evaluation](#vii-evaluation)
+    - [1. Analyze the similarity between the original graph relationship and od, cc.](#1-analyze-the-similarity-between-the-original-graph-relationship-and-od-cc)
+    - [2. Compute relevant metrics.](#2-compute-relevant-metrics)
+  - [VIII. Citation](#viii-citation)
+  - [IX. Contact](#ix-contact)
 
 
 ## Overview
@@ -105,7 +106,7 @@ You can refer to this [webpage](https://blog.techbridge.cc/2019/05/29/how-to-use
 
 ## V. Train and Test
 ### 1. Model Configuration
-The information that needs to be configured before model training is stored in [config/train_config.yaml](./config/train_config.yaml), and the processed data sets and various model configuration information are stored in [config/train_datasets_speed.yaml](./config/train_dataset_speed.yaml). You can modify the tuning parameters yourself.
+The information that needs to be configured before model training is stored in [config/train_config.yaml](./config/train_config.yaml), and the processed datasets and various model configuration information are stored in [config/model_config.yaml](./config/model_config.yaml). You can modify the tuning parameters yourself.
 
 ### 2. Collect the original dataset
 ```
