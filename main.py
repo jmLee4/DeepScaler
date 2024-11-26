@@ -22,6 +22,7 @@ def main(args):
     torch.cuda.manual_seed(train_config["seed"])
 
     # ----------------------- Load data ------------------------
+
     Scaler = getattr(sys.modules["utils.scaler"], train_config["scaler"])
     data_scaler = Scaler(axis=(0, 1, 2))
 
@@ -38,6 +39,7 @@ def main(args):
         data_loaders.append(data_loader)
 
     # --------------------- Trainer setting --------------------
+
     net_name = args.model_name
     net_config = model_config[net_name]
     net_config.update(data_config)
@@ -65,6 +67,7 @@ def main(args):
         scheduler_graph = None
 
     # --------------------------- Train -------------------------
+
     net_trainer = trainer.AdapGLTrainer(
         net_config["adj_mx_path"], net_pred, net_graph, optimizer_pred, optimizer_graph,
         scheduler_pred, scheduler_graph, args.num_epoch, args.num_iter,

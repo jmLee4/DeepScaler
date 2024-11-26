@@ -33,7 +33,7 @@ services = [
     "paymentservice", "productcatalogservice", "recommendationservice", "shippingservice"
 ]
 
-metrics = ["pod", "cpu", "request_duration", "request_received"]
+metrics = ["pod", "cpu", "request_duration", "request_received", "memory"]
 training_root_dir = ""
 
 def fetch_cpu_utilization(service_name, namespace=namespace):
@@ -131,9 +131,9 @@ def fetch_and_save_data(service_name, metric, start_time, end_time, interval, sa
             
             for line in lines:
                 if line[1] == "NaN":
-                    print(str(line[0]), "0", file=f)
+                    print("0", file=f)
                 else:
-                    print(str(line[0]), str(line[1]), file=f)
+                    print(str(line[1]), file=f)
 
 def save_all_fetched_data(times=[], start_index=1, root_dir="./testData/", interval=interval, services=services, metrics=metrics):
 

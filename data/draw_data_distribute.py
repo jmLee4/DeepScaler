@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
 import os
-import sys
 
-def draw_data_distribution(file_path):
+def draw_data_distribution(file_path, output_dir):
     # 读取文件内容
     with open(file_path, 'r') as file:
         data = file.readlines()
@@ -22,12 +21,19 @@ def draw_data_distribution(file_path):
     plt.grid(True)
 
     # 保存图片
-    output_path = os.path.splitext(file_path)[0] + '_draw.png'
+    output_path = os.path.join(output_dir, os.path.splitext(os.path.basename(file_path))[0] + '_draw.png')
     plt.savefig(output_path, dpi=300)
+    plt.close()
     print(f"图片已保存至: {output_path}")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("用法: python draw_data_distribute.py <文件路径>")
-    else:
-        draw_data_distribution(sys.argv[1])
+    data_dir = './data/train'
+    output_dir = './data/train_distribute'
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    for filename in os.listdir(data_dir):
+        file_path = os.path.join(data_dir, filename)
+        if os.path.isfile(file_path):
+            draw_data_distribution(file_path, output_dir)

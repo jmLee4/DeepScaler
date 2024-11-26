@@ -12,7 +12,7 @@ services = [
     "adservice", "cartservice", "checkoutservice", "currencyservice", "emailservice", "frontend",
     "paymentservice", "productcatalogservice", "recommendationservice", "shippingservice"
 ]
-metrics = ["pod", "cpu", "request_duration", "request_received"]
+metrics = ["pod", "cpu", "request_duration", "request_received", "memory"]
 
 # save_all_fetched_data(times_train, 1, root_dir='./train/', interval=60, services=services,metrics=metrics)#interval 间隔
 
@@ -190,43 +190,43 @@ shippingservice_req = shippingservice_req[:,np.newaxis]
 ###########################################################################################
 ###mem
 # "adservice"
-file = './data/train/1_{}_{}.log'.format(services[0],metrics[3])
+file = './data/train/1_{}_{}.log'.format(services[0],metrics[4])
 adservice_mem=np.genfromtxt(file, dtype=np.double)
 adservice_mem = adservice_mem[:,np.newaxis]
 # "cartservice"
-file = './data/train/1_{}_{}.log'.format(services[1],metrics[3])
+file = './data/train/1_{}_{}.log'.format(services[1],metrics[4])
 cartservice_mem=np.genfromtxt(file, dtype=np.double)
 cartservice_mem = cartservice_mem[:,np.newaxis]
 # "checkoutservice"
-file = './data/train/1_{}_{}.log'.format(services[2],metrics[3])
+file = './data/train/1_{}_{}.log'.format(services[2],metrics[4])
 checkoutservice_mem=np.genfromtxt(file, dtype=np.double)
 checkoutservice_mem = checkoutservice_mem[:,np.newaxis]
 # "currencyservice"
-file = './data/train/1_{}_{}.log'.format(services[3],metrics[3])
+file = './data/train/1_{}_{}.log'.format(services[3],metrics[4])
 currencyservice_mem=np.genfromtxt(file, dtype=np.double)
 currencyservice_mem = currencyservice_mem[:,np.newaxis]
 # "emailservice"
-file = './data/train/1_{}_{}.log'.format(services[4],metrics[3])
+file = './data/train/1_{}_{}.log'.format(services[4],metrics[4])
 emailservice_mem=np.genfromtxt(file, dtype=np.double)
 emailservice_mem = emailservice_mem[:,np.newaxis]
 # "frontend"
-file = './data/train/1_{}_{}.log'.format(services[5],metrics[3])
+file = './data/train/1_{}_{}.log'.format(services[5],metrics[4])
 frontend_mem=np.genfromtxt(file, dtype=np.double)
 frontend_mem = frontend_mem[:,np.newaxis]
 # "paymentservice"
-file = './data/train/1_{}_{}.log'.format(services[6],metrics[3])
+file = './data/train/1_{}_{}.log'.format(services[6],metrics[4])
 paymentservice_mem=np.genfromtxt(file, dtype=np.double)
 paymentservice_mem = paymentservice_mem[:,np.newaxis]
 # "productcatalogservice"
-file = './data/train/1_{}_{}.log'.format(services[7],metrics[3])
+file = './data/train/1_{}_{}.log'.format(services[7],metrics[4])
 productcatalogservice_mem=np.genfromtxt(file, dtype=np.double)
 productcatalogservice_mem = productcatalogservice_mem[:,np.newaxis]
 # "recommendationservice"
-file = './data/train/1_{}_{}.log'.format(services[8],metrics[3])
+file = './data/train/1_{}_{}.log'.format(services[8],metrics[4])
 recommendationservice_mem=np.genfromtxt(file, dtype=np.double)
 recommendationservice_mem = recommendationservice_mem[:,np.newaxis]
 # "shippingservice"
-file = './data/train/1_{}_{}.log'.format(services[9],metrics[3])
+file = './data/train/1_{}_{}.log'.format(services[9],metrics[4])
 shippingservice_mem=np.genfromtxt(file, dtype=np.double)
 shippingservice_mem = shippingservice_mem[:,np.newaxis]
 
@@ -238,11 +238,11 @@ for i in range(timeLen):
     listres = np.vstack((adservice_res[i],cartservice_res[i],checkoutservice_res[i],currencyservice_res[i],emailservice_res[i],frontend_res[i],paymentservice_res[i],productcatalogservice_res[i],recommendationservice_res[i],shippingservice_res[i]))
     listreq = np.vstack((adservice_req[i],cartservice_req[i],checkoutservice_req[i],currencyservice_req[i],emailservice_req[i],frontend_req[i],paymentservice_req[i],productcatalogservice_req[i],recommendationservice_req[i],shippingservice_req[i]))
     listmem = np.vstack((adservice_mem[i],cartservice_mem[i],checkoutservice_mem[i],currencyservice_mem[i],emailservice_mem[i],frontend_mem[i],paymentservice_mem[i],productcatalogservice_mem[i],recommendationservice_mem[i],shippingservice_mem[i]))
-    listpod = torch.tensor(listpod, dtype=torch.float32)
-    listcpu = torch.tensor(listcpu, dtype=torch.float32)
-    listres = torch.tensor(listres, dtype=torch.float32)
-    listreq = torch.tensor(listres, dtype=torch.float32)
-    listmem = torch.tensor(listres, dtype=torch.float32)
+    listpod = torch.as_tensor(listpod, dtype=torch.float32)
+    listcpu = torch.as_tensor(listcpu, dtype=torch.float32)
+    listres = torch.as_tensor(listres, dtype=torch.float32)
+    listreq = torch.as_tensor(listres, dtype=torch.float32)
+    listmem = torch.as_tensor(listres, dtype=torch.float32)
     
     listt = torch.cat((listpod,listcpu,listres,listreq,listmem),dim=1)
     

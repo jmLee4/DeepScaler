@@ -12,7 +12,7 @@ from torch.utils.data import DataLoader
 
 import trainer
 from dataset import TPDataset, TPDataset2
-from k8s_operator import K8sOperator
+from utils.k8s_operator import K8sOperator
 from metrics_fetch import save_all_fetch_data
 from models import AdapGL
 from prepareData import predict_read_and_generate_dataset
