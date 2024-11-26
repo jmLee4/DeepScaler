@@ -40,4 +40,5 @@ xx = xx.numpy()
 print("Shape of train.npz:", xx.shape)
 np.savez("./data/train.npz", xx)
 
+# 基于这个大Tensor，构造时序预测的数据集
 read_and_generate_dataset(graph_signal_matrix_filename='./data/train.npz', num_of_hours=1, num_for_predict=1, points_per_hour=80, save=True)

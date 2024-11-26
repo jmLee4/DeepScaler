@@ -115,15 +115,15 @@ def read_and_generate_dataset(graph_signal_matrix_filename, num_of_hours, num_fo
             'target': train_target,
         },
     }
-    print('train x:', all_data['train']['x'].shape)
-    print('train target:', all_data['train']['target'].shape)
+    print('Train x:', all_data['train']['x'].shape)
+    print('Train target:', all_data['train']['target'].shape)
     print()
 
     if save:
         file = os.path.basename(graph_signal_matrix_filename).split('.')[0]
         dirpath = os.path.dirname(graph_signal_matrix_filename)
         filename = os.path.join(dirpath, file + '_' + str(num_of_hours) + '_dataset' )
-        print('save file:', filename)
+        print('Save file:', filename)
         np.savez_compressed(filename, x=all_data['train']['x'], y=all_data['train']['target'])
     return all_data
 
@@ -169,14 +169,14 @@ def predict_read_and_generate_dataset(graph_signal_matrix_filename, num_of_hours
             'x': train_x,
         },
     }
-    print('train x:', all_data['train']['x'].shape)
+    print('Train x:', all_data['train']['x'].shape)
     print()
 
     if save:
         file = os.path.basename(graph_signal_matrix_filename).split('.')[0]
         dirpath = os.path.dirname(graph_signal_matrix_filename)
-        filename = os.path.join(dirpath, file + '_r' + str(num_of_hours) + 'ssj' )
-        print('save file:', filename)
+        filename = os.path.join(dirpath, file + '_' + str(num_of_hours) + '_dataset' )
+        print('Save file:', filename)
         np.savez_compressed(filename, x=all_data['train']['x'])
     return all_data
 
