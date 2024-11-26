@@ -13,9 +13,9 @@ from torch.utils.data import DataLoader
 import trainer
 from dataset import TPDataset, TPDataset2
 from utils.k8s_operator import K8sOperator
-from metrics_fetch import save_all_fetch_data
+from metrics_fetch import save_all_fetched_data
 from models import AdapGL
-from prepareData import predict_read_and_generate_dataset
+from generate_dataset import predict_read_and_generate_dataset
 from utils import scaler
 
 
@@ -33,7 +33,7 @@ def main(args):
     while True:
         start = time.time()
         services = ["adservice", "cartservice", "checkoutservice","currencyservice", "emailservice","frontend","paymentservice","productcatalogservice","recommendationservice","shippingservice"]
-        metrics = ['pod','cpu','res','req','mem']
+        metrics = ["pod", "cpu", "request_duration", "request_received", "memory"]
 
         current_time = datetime.datetime.now()
         current_time_str=current_time.strftime('%Y-%m-%d %H:%M:%S')
@@ -46,7 +46,7 @@ def main(args):
         ]
         print(times_original)
 
-        save_all_fetch_data(times_original, 1, root_dir='/dataForPredict/', interval=60, services=services)#interval 间隔
+        save_all_fetched_data(times_original, 1, root_dir='./dataForPredict/', interval=60, services=services)#interval 间隔
         ### pod
         # "adservice"
         file = '/dataForPredict/1_{}_{}.log'.format(services[0],metrics[0])
@@ -505,7 +505,7 @@ def main(args):
         for svc in service_list:
             if pods_num_to_scale[svc]<=0:
                 pods_num_to_scale[svc]=1
-            k8s_operator.scale_deployment_by_replicas(svc, pods_num_to_scale[svc])
+            # k8s_operator.scale_deployment_by_replicas(svc, pods_num_to_scale[svc])
         print("after scale svc:", pods_num_to_scale)
         end = time.time()
         temp = end-start

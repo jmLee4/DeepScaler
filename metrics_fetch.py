@@ -142,8 +142,8 @@ def save_all_fetched_data(times=[], start_index=1, root_dir="./testData/", inter
         os.makedirs(root_dir)
 
     for i, (start_time, end_or_lasted) in enumerate(times):
-        start_time = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S') + datetime.timedelta(hours=8)  # 时区问题
-        end_time = datetime.datetime.strptime(end_or_lasted, '%Y-%m-%d %H:%M:%S') + datetime.timedelta(hours=8)
+        start_time = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S') #+ datetime.timedelta(hours=8)  # 时区问题
+        end_time = datetime.datetime.strptime(end_or_lasted, '%Y-%m-%d %H:%M:%S') #+ datetime.timedelta(hours=8)
 
         # 遍历每个Service的每个Metric，提取特定时间段的指标
         for service in services:
