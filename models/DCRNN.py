@@ -93,9 +93,7 @@ class DCGRULayer(torch.nn.Module):
             [DCGRUCell(input_size, rnn_hidden_size, use_gc, **kwargs)]
         )
         for _ in range(1, rnn_layer_num):
-            self.dcgru_layers.append(
-                DCGRUCell(rnn_hidden_size, rnn_hidden_size, use_gc, **kwargs)
-            )
+            self.dcgru_layers.append(DCGRUCell(rnn_hidden_size, rnn_hidden_size, use_gc, **kwargs))
 
     def forward(self, x, hx, adj_mx_list):
         hidden_states = []
@@ -146,13 +144,12 @@ class GeneralDCRNN(torch.nn.Module):
             **cell_kwargs
         )
 
-        self.fc_layers = torch.nn.ModuleList([
-            torch.nn.Linear(self.rnn_hidden_size, self.output_size) for _ in range(self.step_num_out)
-        ])
+        self.fc_layers = torch.nn.ModuleList(
+            [torch.nn.Linear(self.rnn_hidden_size, self.output_size) for _ in range(self.step_num_out)]
+        )
 
     def _compute_sampling_threshold(self, batches_seen):
-        return self.cl_decay_steps / (self.cl_decay_steps +
-                                      np.exp(batches_seen / self.cl_decay_steps))
+        return self.cl_decay_steps / (self.cl_decay_steps + np.exp(batches_seen / self.cl_decay_steps))
 
     def encoder(self, x, adj_mx_list=None):
         """

@@ -87,11 +87,7 @@ class AdapGLE2ETrainer(TFTrainer):
 
     def test(self, data_loader, metrics=('mae', 'rmse', 'mape')):
         self.model.load_state_dict(torch.load(self.model_save_path))
-        adj_mx = torch.tensor(
-            data=np.load(self._graph_save_path),
-            dtype=torch.float32,
-            device=self.device
-        )
+        adj_mx = torch.tensor(data=np.load(self._graph_save_path), dtype=torch.float32, device=self.device)
         self.evaluate(data_loader, metrics, adj_mx=adj_mx)
 
     def model_loss_func(self, y_pred, y_true, cur_adj_mx=None):

@@ -22,19 +22,10 @@ class SpatialAttention(torch.nn.Module):
 
         self.w1 = torch.nn.Conv2d(c_in, 1, 1, bias=False)
         self.w2 = torch.nn.Linear(f_in, c_in, bias=False)
-        self.w3 = torch.nn.Parameter(
-            torch.randn(f_in, dtype=torch.float32),
-            requires_grad=True
-        )
-        self.vs = torch.nn.Parameter(
-            torch.randn(num_nodes, num_nodes, dtype=torch.float32),
-            requires_grad=True
-        )
+        self.w3 = torch.nn.Parameter(torch.randn(f_in, dtype=torch.float32), requires_grad=True)
+        self.vs = torch.nn.Parameter(torch.randn(num_nodes, num_nodes, dtype=torch.float32), requires_grad=True)
 
-        self.bs = torch.nn.Parameter(
-            torch.randn(num_nodes, num_nodes, dtype=torch.float32),
-            requires_grad=True
-        )
+        self.bs = torch.nn.Parameter(torch.randn(num_nodes, num_nodes, dtype=torch.float32), requires_grad=True)
 
         torch.nn.init.kaiming_uniform_(self.vs, a=math.sqrt(5))
         torch.nn.init.kaiming_uniform_(self.bs, a =math.sqrt(5))
@@ -102,23 +93,11 @@ class TemporalAttention(torch.nn.Module):
     def __init__(self, num_nodes, f_in, c_in):
         super(TemporalAttention, self).__init__()
 
-        self.w1 = torch.nn.Parameter(
-            torch.randn(num_nodes, dtype=torch.float32),
-            requires_grad=True
-        )
+        self.w1 = torch.nn.Parameter(torch.randn(num_nodes, dtype=torch.float32), requires_grad=True)
         self.w2 = torch.nn.Linear(f_in, num_nodes, bias=False)
-        self.w3 = torch.nn.Parameter(
-            torch.randn(f_in, dtype=torch.float32),
-            requires_grad=True
-        )
-        self.be = torch.nn.Parameter(
-            torch.randn(1, c_in, c_in, dtype=torch.float32),
-            requires_grad=True
-        )
-        self.ve = torch.nn.Parameter(
-            torch.zeros(c_in, c_in, dtype=torch.float32),
-            requires_grad=True
-        )
+        self.w3 = torch.nn.Parameter(torch.randn(f_in, dtype=torch.float32), requires_grad=True)
+        self.be = torch.nn.Parameter(torch.randn(1, c_in, c_in, dtype=torch.float32), requires_grad=True)
+        self.ve = torch.nn.Parameter(torch.zeros(c_in, c_in, dtype=torch.float32), requires_grad=True)
 
         torch.nn.init.kaiming_uniform_(self.ve, a=math.sqrt(5))
         torch.nn.init.kaiming_uniform_(self.be, a=math.sqrt(5))
@@ -231,9 +210,7 @@ class ASTGCN(torch.nn.Module):
         for i in range(1, num_block + 1):
             self.blocks.add_module(
                 name='block_{}'.format(i),
-                module=ASTGCNBlock(c_in, f_in, num_cheb_filter, num_time_filter,
-                                   kernel_size, adj_mx, stride, padding)
-            )
+                module=ASTGCNBlock(c_in, f_in, num_cheb_filter, num_time_filter, kernel_size, adj_mx, stride, padding))
             c_in, f_in = (c_in + 2 * padding - kernel_size) // stride + 1, num_time_filter
 
         self.final_conv = torch.nn.Conv2d(

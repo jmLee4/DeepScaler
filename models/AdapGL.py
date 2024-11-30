@@ -18,14 +18,22 @@ class GraphConv(torch.nn.Module):
     """
     def __init__(self, f_in, num_cheb_filter, conv_type=None, **kwargs):
         super(GraphConv, self).__init__()
+
+        # 切比雪夫多项式的阶数，默认为 3
         self.K = kwargs.get('K', 3) if conv_type == 'cheb' else 1
+        # 是否包含自特征建模
         self.with_self = kwargs.get('with_self', True)
+        # 线性变换，用于卷积操作
         self.w_conv = torch.nn.Linear(f_in * self.K, num_cheb_filter, bias=False)
+        # 线性变换，用于自特征建模
         if self.with_self:
             self.w_self = torch.nn.Linear(f_in, num_cheb_filter)
+        # 卷积类型
         self.conv_type = conv_type
+        # 激活函数
         self.activation = kwargs.get('activation', torch.relu)
 
+    # 切比雪夫图卷积
     def cheb_conv(self, x, adj_mx):
         bs, num_nodes, _ = x.size()
 
@@ -45,6 +53,7 @@ class GraphConv(torch.nn.Module):
             h = self.activation(h)
         return h
 
+    # 标准图卷积
     def gcn_conv(self, x, adj_mx):
         h = torch.matmul(adj_mx, x)
         h = self.w_conv(h)
@@ -54,6 +63,7 @@ class GraphConv(torch.nn.Module):
             h = self.activation(h)
         return h
 
+    # 选择卷积函数并执行
     def forward(self, x, adj_mx):
         self.conv_func = self.cheb_conv if self.conv_type == 'cheb' else self.gcn_conv#用到切比雪夫
         return self.conv_func(x, adj_mx)
@@ -69,20 +79,12 @@ class GraphLearn(torch.nn.Module):
     """
     def __init__(self, num_nodes, init_feature_num):
         super(GraphLearn, self).__init__()
-        self.epsilon = 1 / num_nodes * 0.5
-        self.beta = torch.nn.Parameter(
-            torch.rand(num_nodes, dtype=torch.float32),
-            requires_grad=True
-        )
 
-        self.w1 = torch.nn.Parameter(
-            torch.zeros((num_nodes, init_feature_num), dtype=torch.float32),
-            requires_grad=True
-        )
-        self.w2 = torch.nn.Parameter(
-            torch.zeros((num_nodes, init_feature_num), dtype=torch.float32),
-            requires_grad=True
-        )
+        self.epsilon = 1 / num_nodes * 0.5
+        self.beta = torch.nn.Parameter(torch.rand(num_nodes, dtype=torch.float32), requires_grad=True)
+
+        self.w1 = torch.nn.Parameter(torch.zeros((num_nodes, init_feature_num), dtype=torch.float32), requires_grad=True)
+        self.w2 = torch.nn.Parameter(torch.zeros((num_nodes, init_feature_num), dtype=torch.float32), requires_grad=True)
 
         self.attn = torch.nn.Conv2d(2, 1, kernel_size=1)#卷积操作
 
@@ -151,10 +153,8 @@ class AdapGLBlockT(torch.nn.Module):
         self.rnn = DCGRULayer(num_cheb_filter, rnn_hidden_size, rnn_layer_num, use_gc=False)
         self.temporal_att = ChannelAttention(c_in)
 
-        self.graph_conv_1 = GraphConv(f_in, num_cheb_filter // 2, conv_type, K=K, activation=None,
-                                      with_self=False)
-        self.graph_conv_2 = GraphConv(f_in, num_cheb_filter // 2, conv_type, K=K, activation=None,
-                                      with_self=False)
+        self.graph_conv_1 = GraphConv(f_in, num_cheb_filter // 2, conv_type, K=K, activation=None, with_self=False)
+        self.graph_conv_2 = GraphConv(f_in, num_cheb_filter // 2, conv_type, K=K, activation=None, with_self=False)
 
         self.layer_norm = torch.nn.LayerNorm(num_cheb_filter)
 
@@ -193,16 +193,15 @@ class AdapGLBlockT(torch.nn.Module):
         return h
 
 
-class AdapGLBlockA(torch.nn.Module):###用到这里了
-    def __init__(self, c_in, f_in, num_nodes, num_cheb_filter, num_time_filter, kernel_size,
-                 conv_type, K=3):
+class AdapGLBlockA(torch.nn.Module):
+    # AdapGLA 核心组成部分，实现了图卷积和时间卷积的结合
+
+    def __init__(self, c_in, f_in, num_nodes, num_cheb_filter, num_time_filter, kernel_size, conv_type, K=3):
         super(AdapGLBlockA, self).__init__()
 
         self.padding = (kernel_size - 1) // 2
-        self.graph_conv_p = GraphConv(f_in, num_cheb_filter // 2, conv_type=conv_type,
-                                      K=K, activation=None, with_self=False)
-        self.graph_conv_n = GraphConv(f_in, num_cheb_filter // 2, conv_type=conv_type,
-                                      K=K, activation=None, with_self=False)
+        self.graph_conv_p = GraphConv(f_in, num_cheb_filter // 2, conv_type=conv_type, K=K, activation=None, with_self=False)
+        self.graph_conv_n = GraphConv(f_in, num_cheb_filter // 2, conv_type=conv_type, K=K, activation=None, with_self=False)
         self.temporal_att = TemporalAttention(num_nodes, f_in, c_in)# self.temporal_att = TemporalAttention(num_nodes, f_in, c_in) 只借鉴了时间注意力机制
         #Compute Temporal attention scores.
         self.time_conv = torch.nn.Conv2d(
@@ -258,15 +257,25 @@ class AdapGLA(torch.nn.Module):
     def __init__(self, **kwargs):
         super(AdapGLA, self).__init__()
 
+        # AdapGLBlockA 块的数量
         num_block = kwargs.get('num_block', 2)
+        # 图中的节点数量
         num_nodes = kwargs.get('num_nodes', None)
+        # 输入的时间步数
         c_in = kwargs.get('step_num_in', 12)
+        # 输出的时间步数
         c_out = kwargs.get('step_num_out', 12)#1
+        # 输入特征的数量
         f_in = kwargs.get('input_size', 1)
+        # 卷积核大小
         kernel_size = kwargs.get('kernel_size', 3)
+        # 时间卷积的输出通道数
         num_time_filter = kwargs.get('num_time_filter', 64)
+        # 切比雪夫图卷积的隐藏层大小
         num_cheb_filter = kwargs.get('num_cheb_filter', 64)
+        # 图卷积的类型，可以是 gcn 或 cheb
         conv_type = kwargs.get('conv_type', 'gcn')
+        # 切比雪夫多项式的阶数
         K = kwargs.get('K', 1)
 
         activation = kwargs.get('activation', 'relu')
@@ -275,10 +284,7 @@ class AdapGLA(torch.nn.Module):
         self.block_list = torch.nn.ModuleList()
         for i in range(num_block):
             temp_h = f_in if i == 0 else num_time_filter
-            self.block_list.append(AdapGLBlockA(
-                c_in, temp_h, num_nodes, num_cheb_filter,
-                num_time_filter, kernel_size, conv_type, K=K
-            ))
+            self.block_list.append(AdapGLBlockA(c_in, temp_h, num_nodes, num_cheb_filter, num_time_filter, kernel_size, conv_type, K=K))
 
         self.final_conv = torch.nn.Conv2d(c_in, c_out, (1, num_time_filter))
 
@@ -322,9 +328,11 @@ class AdapGLT(torch.nn.Module):
         with_res = kwargs.get('with_res', False)
 
         sel_func = lambda x: f_in if x == 0 else rnn_hidden_size
-        self.module_list = torch.nn.ModuleList([AdapGLBlockT(
-            c_in, sel_func(i), rnn_hidden_size, rnn_layer_num, num_cheb_filter,
-            conv_type, batch_first, with_res, K) for i in range(num_block)
+        self.module_list = torch.nn.ModuleList([
+            AdapGLBlockT(
+                c_in, sel_func(i), rnn_hidden_size, rnn_layer_num, num_cheb_filter,
+                conv_type, batch_first, with_res, K
+            ) for i in range(num_block)
         ])
 
         self.final_conv = torch.nn.Conv2d(

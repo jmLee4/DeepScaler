@@ -34,10 +34,11 @@ class LSTM(torch.nn.Module):
         self.num_nodes = kwargs.get('num_nodes', -1)
         self.output_size = kwargs.get('step_num_out', -1)
 
-        self.lstm_list = torch.nn.ModuleList(
-            [LSTMNet(self.input_size * self.num_nodes, self.hidden_lstm, self.hidden_fc, self.num_nodes) 
-             for _ in range(self.output_size)]
-        )
+        self.lstm_list = torch.nn.ModuleList([
+            LSTMNet(
+                self.input_size * self.num_nodes, self.hidden_lstm, self.hidden_fc, self.num_nodes
+            ) for _ in range(self.output_size)
+        ])
 
     def forward(self, x):
         x = x.view(x.size(0), x.size(1), -1)

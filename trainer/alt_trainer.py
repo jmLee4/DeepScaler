@@ -48,13 +48,9 @@ class AdapGLTrainer(Trainer):
         if not os.path.exists(model_save_dir):
             os.mkdir(model_save_dir)
 
-        self.model_pred_trainer = self.ModelPredTrainer(
-            model_pred, optimizer_pred, scheduler_pred, epoch_num, scaler,
-            model_save_path, self)
+        self.model_pred_trainer = self.ModelPredTrainer(model_pred, optimizer_pred, scheduler_pred, epoch_num, scaler, model_save_path, self)
 
-        self.model_graph_trainer = self.GraphLearnTrainer(
-            model_graph, optimizer_graph, scheduler_graph, epoch_num, scaler,
-            self.graph_save_path, self)
+        self.model_graph_trainer = self.GraphLearnTrainer(model_graph, optimizer_graph, scheduler_graph, epoch_num, scaler, self.graph_save_path, self)
 
         # my own variables.
         best_save_dir = os.path.join(model_save_dir, model_name.split('.')[0])
@@ -150,11 +146,7 @@ class AdapGLTrainer(Trainer):
     def test(self, data_loader, metrics=('mae', 'rmse', 'mape')):
         self.model_pred.load_state_dict(torch.load(self.best_pred_path))
         best_adj_mx_np = np.load(self.best_graph_path)
-        best_adj_mx = torch.tensor(
-            data=best_adj_mx_np,
-            dtype=torch.float32,
-            device=self.device
-        )
+        best_adj_mx = torch.tensor(data=best_adj_mx_np, dtype=torch.float32, device=self.device)
         sparsity = (best_adj_mx_np == 0).sum() / (best_adj_mx_np.shape[0] ** 2)
         print('Sparsity: {:.4f}'.format(sparsity))
         print('Test results of current graph: ')

@@ -1,12 +1,12 @@
 # 数据集
 dataset:
-  data_dir: data/dataset_s
+  data_dir: .
   step_num_in: 12
   step_num_out: 12
   num_nodes: 307
   input_size: 1
   batch_size: 64
-  device: cuda:0
+  device: cpu
 
 AdapGLA:
   num_block: 2

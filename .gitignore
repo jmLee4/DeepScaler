@@ -3,3 +3,6 @@
 *.npz
 Mark.yaml
 1_*.png
+**/.github
+debug_model.py
+predict_scale_2.py
