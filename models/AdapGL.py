@@ -327,6 +327,7 @@ class AdapGLT(torch.nn.Module):
         conv_type = kwargs.get('conv_type', 'cheb')
         with_res = kwargs.get('with_res', False)
 
+        # sel_func: 第1次取决于f_in，第2次取决于rnn_hidden_size
         sel_func = lambda x: f_in if x == 0 else rnn_hidden_size
         self.module_list = torch.nn.ModuleList([
             AdapGLBlockT(

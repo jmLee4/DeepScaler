@@ -57,7 +57,7 @@ def fetch_and_save_data(service_name, metric, start_time, end_time, interval, sa
                 else:
                     print(str(line[1]), file=f)
 
-def save_all_fetched_data(times=[], start_index=1, root_dir="./testData/", interval=interval, services=services, metrics=metrics):
+def save_all_fetched_data(times=[], start_index=1, root_dir="./testData/", interval=interval, services=services, metrics=metrics, print_log=False):
 
     # 不存在则创建
     if not os.path.exists(root_dir):
@@ -71,7 +71,8 @@ def save_all_fetched_data(times=[], start_index=1, root_dir="./testData/", inter
         for service in services:
             for metric in metrics:
                 fetch_and_save_data(service, metric, start_time, end_time, interval, root_dir + "{}_{}_{}.log".format(start_index+i, service, metric))
-                print("Saved file: " + root_dir + "{}_{}_{}.log".format(start_index+i, service, metric))
+                if print_log:
+                    print("Saved file: " + root_dir + "{}_{}_{}.log".format(start_index+i, service, metric))
 
 if __name__ == '__main__':
 

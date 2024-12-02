@@ -1,10 +1,10 @@
 # 数据集
 dataset:
   data_dir: .
-  step_num_in: 12
-  step_num_out: 12
+  step_num_in: 12 # 80
+  step_num_out: 12 # 1
   num_nodes: 307
-  input_size: 1
+  input_size: 1 # 4
   batch_size: 64
   device: cpu
 
